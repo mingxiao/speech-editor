@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="pac"
+   name="%pluginName"
+   version="3.1.100.qualifier"
+   provider-name="%providerName"
+   class="org.eclipse.ui.examples.javaeditor.JavaEditorExamplePlugin">
+
+   <runtime>
+      <library name="javaeditorexample.jar">
+         <export name="*"/>
+      </library>
+      <library name="templateeditorexample.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.7.2"/>
+      <import plugin="sphinxEclipsePlugin" version="1.0.0"/>
+   </requires>
+
+
+<!-- =========================================================================== -->
+<!-- Java Editor Example                                                         -->
+<!-- =========================================================================== -->
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="Ming's Java Editor"
+            icon="icons/obj16/java.gif"
+            extensions="java"
+            contributorClass="org.eclipse.ui.examples.javaeditor.JavaActionContributor"
+            class="org.eclipse.ui.examples.javaeditor.JavaEditor"
+            id="org.eclipse.ui.JavaEditor">
+      </editor>
+   </extension>
+   
+   <extension
+         id="ExampleJavaDocumentSetupParticipant"
+         name="%documentSetupParticipantName"
+         point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            extensions="jav"
+            class="org.eclipse.ui.examples.javaeditor.JavaDocumentSetupParticipant">
+      </participant>
+   </extension>
+   
+   <!-- Added 7/16 -->
+   
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            name="Editor Command"
+            id="Editor.commands.test">
+      </command>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="Editor.commands.test"
+            class="org.eclipse.ui.examples.javaeditor.JavaEditorHandler">
+      </handler>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="Editor.speech">
+            <command
+                  commandId="Editor.commands.test"
+                  icon="icons/sample.png"
+                  tooltip="Connect over WIFI"
+                  style="toggle"
+                  id="Editor.speech">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   
+   <!-- Added 7/25-->
+   <extension
+      id="id1"
+      point="org.eclipse.jdt.ui.javaCompletionProposalComputer">
+   	  <javaCompletionProposalComputer
+            activate="true"
+            class="org.eclipse.ui.examples.javaeditor.SpeechProposal">
+      </javaCompletionProposalComputer>
+   </extension>
+   
+   
+<!-- =========================================================================== -->
+<!-- Template Editor Example                                                     -->
+<!-- =========================================================================== -->
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="%xml.editor.name"
+            icon="icons/sample.gif"
+            extensions="xml"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            class="org.eclipse.ui.examples.templateeditor.editors.TemplateEditor"
+            id="org.eclipse.ui.examples.templateeditor.editors.TemplateEditor">
+      </editor>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="%xml.editor.preferencePage.label"
+            class="org.eclipse.ui.examples.templateeditor.preferences.TemplatesPreferencePage"
+            id="org.eclipse.ui.examples.templateeditor.preferencepage">
+      </page>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextType
+            name="%xml.contextType.name"
+            class="org.eclipse.ui.examples.templateeditor.template.XMLContextType"
+            id="org.eclipse.ui.examples.templateeditor.xml">
+      </contextType>
+      <template
+            name="%ant.tasks.copy.name"
+            icon="icons/template.gif"
+            description="%ant.tasks.copy.description"
+            contextTypeId="org.eclipse.ui.examples.templateeditor.xml"
+            id="org.eclipse.ui.examples.templateeditor.ant.copy">
+         <pattern>&lt;copy todir=&quot;${dst}&quot;&gt;
+	&lt;fileset dir=&quot;${src}&quot;/&gt;
+&lt;/copy&gt;</pattern>
+      </template>
+      <resolver
+            name="%ant.resolvers.src"
+            type="src"
+            icon="icons/resolver.gif"
+            description="%ant.resolvers.src.description"
+            contextTypeId="org.eclipse.ui.examples.templateeditor.xml"
+            class="org.eclipse.ui.examples.templateeditor.template.AntVariableResolver">
+      </resolver>
+      <resolver
+            name="%ant.resolvers.dst"
+            type="dst"
+            icon="icons/resolver.gif"
+            description="%ant.resolvers.dst.description"
+            contextTypeId="org.eclipse.ui.examples.templateeditor.xml"
+            class="org.eclipse.ui.examples.templateeditor.template.AntVariableResolver">
+      </resolver>
+      <include
+      		file="templates/ant.xml"
+      		translations="$nl$/templates/ant.properties">
+      </include>
+   </extension>
+
+</plugin>
